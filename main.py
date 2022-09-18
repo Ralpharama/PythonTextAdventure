@@ -1,6 +1,7 @@
 from ast import parse
 import json
 import filehandler
+import funcs
 from location import Location   # location class
 from locations import locs      # locations and their states
 from objects import objs        # objects in the game
@@ -13,6 +14,7 @@ print("")
 
 playing = True
 parser = Parser()
+locs[gm["CURLOC"]].display_desc(gm,objs)
 
 while playing:
     sentence = input("What now? > ")
@@ -44,23 +46,17 @@ while playing:
                 filehandler.load_class("locs",locs)
                 filehandler.load_class("objs",objs)
                 filehandler.load_dict("gm",gm)
-                print(gm)
-                locs[gm["CURLOC"]].display_desc()
+                locs[gm["CURLOC"]].display_desc(gm,objs)
                 break
 
             # check room-specifc rules (todo:)
-
-            # generic look
-            if vlist["LOOK"]:
-                locs[gm["CURLOC"]].display_desc(objs)
-                break
 
             # generic movement
             if vlist["NORTH"] or vlist["EAST"] or vlist["SOUTH"] or vlist["WEST"] or vlist["UP"] or vlist["DOWN"] or vlist["INSIDE"] or vlist["OUTSIDE"]:
                 rm = locs[gm["CURLOC"]].go_direction(vlist)
                 if rm:
                     gm["CURLOC"] = rm
-                    locs[gm["CURLOC"]].display_desc(objs)
+                    locs[gm["CURLOC"]].display_desc(gm,objs)
                 else:
                     print("You can't go that way.")
                 break
@@ -75,8 +71,31 @@ while playing:
                                 print("You pick up the %s." % objs[ob].o["title"])
                             else:
                                 print("You can't take that.")
+                        elif objs[ob].o["location"] == "SELF":
+                            print("You already have that.")
                         else:
                             print("I can't see that here.")
+                break
+
+            # generic drop
+            if vlist["DROP"]:
+                for ob in olist:
+                    if olist[ob]:
+                        if objs[ob].o["location"] == "SELF":
+                            objs[ob].o["location"] = gm["CURLOC"]
+                            print("You drop the %s." % objs[ob].o["title"])
+                        else:
+                            print("You don't have that.")
+                break
+
+            # inv
+            if vlist["INV"]:
+                funcs.display_inv(gm,objs)
+                break
+
+            # generic look
+            if vlist["LOOK"]:
+                locs[gm["CURLOC"]].display_desc(gm,objs)
                 break
 
             # end processing sentence
@@ -89,3 +108,5 @@ while playing:
         print("I don't understand.")
 
 print("Thanks for playing!")
+
+

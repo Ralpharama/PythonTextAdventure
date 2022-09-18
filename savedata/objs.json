@@ -1,1 +1,1 @@
-[{"lcode": "LANTERN", "title": "Brass lantern"}]
+[{"lcode": "LANTERN", "title": "Brass lantern", "desc": "An old brass lantern. Actually it's a cheap modern version, it required batteries and has a garish white LED glow.", "location": "LONELYCROSSROADS", "alts": "lantern,brass lantern,lamp,test thing", "pickup": true}]

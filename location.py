@@ -16,14 +16,14 @@ class Location:
         self.o["inside"] = inside
         self.o["outside"] = outside
         
-    def display_title(self):
-        print(self.o["title"])
-
-    def display_desc(self,objs):
+    def display_desc(self,gm,objs):
         print(self.o["title"])
         print(self.o["desc"])
         print(self.display_exits())
         print(self.display_objects(objs))
+
+    def display_title(self):
+        print(self.o["title"])
 
     def display_exits(self):
         exit_text = ""
