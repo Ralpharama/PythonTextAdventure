@@ -26,12 +26,12 @@ while playing:
         # process sentence
         while True:
 
-            # quit, load, save etc
+            # quit
             if vlist["QUIT"]:
                 playing = False
                 break
 
-            # save.
+            # save
             if vlist["SAVE"]:
                 filehandler.save_class("locs",locs)
                 filehandler.save_class("objs",objs)
@@ -39,7 +39,7 @@ while playing:
                 print("Game saved.")
                 break
 
-            # load. we loop through the list and set each locs entry with the matching index values
+            # load
             if vlist["LOAD"]:
                 filehandler.load_class("locs",locs)
                 filehandler.load_class("objs",objs)
@@ -52,7 +52,7 @@ while playing:
 
             # generic look
             if vlist["LOOK"]:
-                locs[gm["CURLOC"]].display_desc()
+                locs[gm["CURLOC"]].display_desc(objs)
                 break
 
             # generic movement
@@ -60,12 +60,27 @@ while playing:
                 rm = locs[gm["CURLOC"]].go_direction(vlist)
                 if rm:
                     gm["CURLOC"] = rm
-                    locs[gm["CURLOC"]].display_desc()
+                    locs[gm["CURLOC"]].display_desc(objs)
                 else:
                     print("You can't go that way.")
                 break
 
+            # generic take
+            if vlist["TAKE"]:
+                for ob in olist:
+                    if olist[ob]:
+                        if objs[ob].o["location"] == gm["CURLOC"]:
+                            if objs[ob].o["pickup"]:
+                                objs[ob].o["location"] = "SELF"
+                                print("You pick up the %s." % objs[ob].o["title"])
+                            else:
+                                print("You can't take that.")
+                        else:
+                            print("I can't see that here.")
+                break
+
             # end processing sentence
+            print("I don't understand.")
             break
 
         # process after sentence things (todo:)

@@ -1,5 +1,7 @@
-class Location:
+from pickle import OBJ
 
+
+class Location:
     def __init__(self, lcode, title = "", desc = "", north = "", east = "", south = "", west = "", up = "", down = "", inside = "", outside = ""):
         self.o = {}
         self.o["lcode"] = lcode
@@ -17,10 +19,11 @@ class Location:
     def display_title(self):
         print(self.o["title"])
 
-    def display_desc(self):
+    def display_desc(self,objs):
         print(self.o["title"])
         print(self.o["desc"])
         print(self.display_exits())
+        print(self.display_objects(objs))
 
     def display_exits(self):
         exit_text = ""
@@ -36,6 +39,16 @@ class Location:
             if exit_text[-2:] == ", ": exit_text = exit_text[:-2]
             exit_text = "There are exists to the " + exit_text + "."
         return exit_text
+
+    def display_objects(self,objs):
+        obj_text = ""
+        for o in objs:
+            if objs[o].o["pickup"] and objs[o].o["location"] == self.o["lcode"]:
+                obj_text += objs[o].o["title"] + ", "
+        if obj_text:
+            if obj_text[-2:] == ", ": obj_text = obj_text[:-2]
+            obj_text = "Also here is " + obj_text + "."
+        return obj_text
 
     def go_direction(self,vlist):
         if vlist["NORTH"] :

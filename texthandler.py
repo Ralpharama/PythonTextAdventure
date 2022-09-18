@@ -15,9 +15,9 @@ class Parser():
         list_of_words = self.parse_sentence(text)
 
         # single word things
-        for w in list_of_words:
-            for v in verbs:
-                to_return[v] = False 
+        for v in verbs:
+            to_return[v] = False 
+            for w in list_of_words:
                 list_of_alts = verbs[v].split(",")
                 if w in list_of_alts:
                     to_return[v] = True                  
@@ -40,9 +40,9 @@ class Parser():
         list_of_words = self.parse_sentence(text)
 
         # single word things
-        for w in list_of_words:
-            for itm in objs:
-                to_return[objs[itm].o["lcode"]]  = False 
+        for itm in objs:
+            to_return[objs[itm].o["lcode"]]  = False 
+            for w in list_of_words:
                 list_of_alts = objs[itm].o["alts"].split(",")
                 if w in list_of_alts:
                     to_return[objs[itm].o["lcode"]] = True 
