@@ -1,23 +1,18 @@
-from enum import Enum
 import json
-from location import Location
-from locations import locs
-from texthandler import Parser
+import filehandler
+from location import Location   # location class
+from locations import locs      # locations and their states
+from gamestate import gm        # flags an in game state vars
+from texthandler import Parser  # handles input and parsing verbs, nouns etc
 
-class GameState(Enum):
-    ALIVE = True
-    DEAD = False
-
-
-print("Welcome to Escape From Kontula. A text adventure game written in python.")
+print("Welcome to Escape From Tulakon. A text adventure game written in python.")
 print("Type 'help' for guidance on how to play.")
 print("")
 
-gameState = GameState.ALIVE
-cur_location = "ILANOTERRACE"
+playing = True
 parser = Parser()
 
-while gameState == GameState.ALIVE:
+while playing:
     sentence = input("What now? > ")
     vlist = parser.parse(sentence)
 
@@ -30,45 +25,37 @@ while gameState == GameState.ALIVE:
 
             # quit, load, save etc
             if vlist["QUIT"]:
-                gameState = GameState.DEAD
+                playing = False
                 break
 
+            # save.
             if vlist["SAVE"]:
-                with open('locs.json', 'w') as f:
-                    f.write("[")
-                    count = 0
-                    for l in locs:
-                        json.dump(locs[l].o, f)
-                        count += 1
-                        if count != len(locs): f.write(",")
-                    f.write("]")
+                filehandler.save_class("locs",locs)
+                filehandler.save_dict("gm",gm)
+                print("Game saved.")
                 break
 
+            # load. we loop through the list and set each locs entry with the matching index values
             if vlist["LOAD"]:
-                f = open('locs.json')
-                tmplocs = json.load(f)
-                #print(tmplocs)
-                for l in tmplocs:
-                    lcode = l["lcode"]
-                    print(lcode)
-                    #locs[lcode] = Location(lcode)
-                    for attrib in l:
-                        locs[lcode].o[attrib] = l[attrib]
-                    print(locs[lcode])
+                filehandler.load_class("locs",locs)
+                filehandler.load_dict("gm",gm)
+                print(gm)
+                locs[gm["CURLOC"]].display_desc()
+                break
 
             # check room-specifc rules (todo:)
 
             # generic look
             if vlist["LOOK"]:
-                locs[cur_location].display_desc()
+                locs[gm["CURLOC"]].display_desc()
                 break
 
             # generic movement
             if vlist["NORTH"] or vlist["EAST"] or vlist["SOUTH"] or vlist["WEST"] or vlist["UP"] or vlist["DOWN"] or vlist["INSIDE"] or vlist["OUTSIDE"]:
-                rm = locs[cur_location].go_direction(vlist)
+                rm = locs[gm["CURLOC"]].go_direction(vlist)
                 if rm:
-                    cur_location = rm
-                    locs[cur_location].display_desc()
+                    gm["CURLOC"] = rm
+                    locs[gm["CURLOC"]].display_desc()
                 else:
                     print("You can't go that way.")
                 break

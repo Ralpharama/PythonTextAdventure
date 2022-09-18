@@ -2,19 +2,17 @@ from location import Location
 
 locs = {}
 
-# Ilano terrace
-locs["ILANOTERRACE"] = Location(
-    "ILANOTERRACE",
-    "Ilano terrace",
-    "In summer months the central square of the mall is converted into a terassi, think a small kiosk serving drinks, tables, chairs, parasols.",
-    "NORTHOFSQUARE","EASTOFSQUARE","SOUTHOFSQUARE","WESTOFSQUARE"
+locs["LONELYCROSSROADS"] = Location(
+    "LONELYCROSSROADS",
+    "Lonely crossroads",
+    "Terrible things happen at crossroads, according to folklore.",
+    "EDGEOFWOODS","RIVERBANK","LONELYROAD","DUNGEONENTRANCE"
     )
 
-# South of the square
-locs["SOUTHOFSQUARE"] = Location(
-    "SOUTHOFSQUARE",
-    "South of the square",
-    "Near the supermarket.",
-    "ILANOTERRACE"
+locs["RIVERBANK"] = Location(
+    "RIVERBANK",
+    "Riverbank",
+    "A dark river flows forcefully here.",
+    "","","","LONELYCROSSROADS"
     )
 
