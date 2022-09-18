@@ -1,6 +1,3 @@
-from unittest import case
-
-
 class Location:
 
     def __init__(self, lcode, title = "", desc = "", north = "", east = "", south = "", west = "", up = "", down = "", inside = "", outside = ""):

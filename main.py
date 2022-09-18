@@ -1,7 +1,9 @@
+from ast import parse
 import json
 import filehandler
 from location import Location   # location class
 from locations import locs      # locations and their states
+from objects import objs        # objects in the game
 from gamestate import gm        # flags an in game state vars
 from texthandler import Parser  # handles input and parsing verbs, nouns etc
 
@@ -14,7 +16,8 @@ parser = Parser()
 
 while playing:
     sentence = input("What now? > ")
-    vlist = parser.parse(sentence)
+    vlist = parser.parse_verbs(sentence)
+    olist = parser.parse_objs(sentence,objs)
 
     if vlist:
 
@@ -31,6 +34,7 @@ while playing:
             # save.
             if vlist["SAVE"]:
                 filehandler.save_class("locs",locs)
+                filehandler.save_class("objs",objs)
                 filehandler.save_dict("gm",gm)
                 print("Game saved.")
                 break
@@ -38,6 +42,7 @@ while playing:
             # load. we loop through the list and set each locs entry with the matching index values
             if vlist["LOAD"]:
                 filehandler.load_class("locs",locs)
+                filehandler.load_class("objs",objs)
                 filehandler.load_dict("gm",gm)
                 print(gm)
                 locs[gm["CURLOC"]].display_desc()

@@ -10,7 +10,7 @@ class Parser():
     def parse_sentence(self,text):
         return re.findall(r'[\w]+', text.lower())
 
-    def parse(self,text):
+    def parse_verbs(self,text):
         to_return = {}
         list_of_words = self.parse_sentence(text)
         for w in list_of_words:
@@ -20,3 +20,16 @@ class Parser():
                 if w in list_of_alts:
                     to_return[v] = True 
         return to_return
+
+    def parse_objs(self,text,objs):
+        to_return = {}
+        list_of_words = self.parse_sentence(text)
+        for w in list_of_words:
+            for itm in objs:
+                to_return[objs[itm].o["lcode"]]  = False 
+                list_of_alts = objs[itm].o["alts"]
+                if w in list_of_alts:
+                    to_return[objs[itm].o["lcode"]] = True 
+        print(to_return)
+        return to_return
+
