@@ -7,6 +7,9 @@ verbs["DROP"] = "drop,lose,discard,let go,put down,set down,release"
 verbs["EXAMINE"] = "x,examine,look at,describe,study,inspect,investigate,appraise"
 verbs["INV"] = "i,inv,inventory,carrying"
 
+verbs["SWIM"] = "swim"
+verbs["CROSS"] = "cross,traverse,go across,pass over,travel"
+
 verbs["NORTH"] = "north,n"
 verbs["EAST"] = "east,e"
 verbs["SOUTH"] = "south,s"

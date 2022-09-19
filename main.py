@@ -2,8 +2,10 @@ from ast import parse
 import json
 import filehandler
 import funcs
+from highlevel import do_high_level
 from location import Location   # location class
-from locations import locs      # locations and their states
+from locations import locs
+from lowlevel import do_low_level      # locations and their states
 from objects import objs        # objects in the game
 from gamestate import gm        # flags an in game state vars
 from texthandler import Parser  # handles input and parsing verbs, nouns etc
@@ -17,16 +19,28 @@ parser = Parser()
 locs[gm["CURLOC"]].display_desc(gm,objs)
 
 while playing:
+    # process high-level pre-sentence things (todo:)
+    do_high_level(gm,objs)
+
+    # check if we died
+    if not gm["ALIVE"]:
+        playing = False
+        funcs.do_death()
+        break
+
+    # get input and parse it
     sentence = input("What now? > ")
     vlist = parser.parse_verbs(sentence)
     olist = parser.parse_objs(sentence,objs)
 
+    # if we have a verb
     if vlist:
 
-        # process high-level pre-sentence things (todo:)
+        # low level (specifics in location) things
+        cont = do_low_level(gm,vlist,olist,objs)
 
         # process sentence
-        while True:
+        while cont:
 
             # quit
             if vlist["QUIT"]:
@@ -61,31 +75,19 @@ while playing:
                     print("You can't go that way.")
                 break
 
-            # generic take
+            # take
             if vlist["TAKE"]:
-                for ob in olist:
-                    if olist[ob]:
-                        if objs[ob].o["location"] == gm["CURLOC"]:
-                            if objs[ob].o["pickup"]:
-                                objs[ob].o["location"] = "SELF"
-                                print("You pick up the %s." % objs[ob].o["title"])
-                            else:
-                                print("You can't take that.")
-                        elif objs[ob].o["location"] == "SELF":
-                            print("You already have that.")
-                        else:
-                            print("I can't see that here.")
+                funcs.take_obj(gm,olist,objs)
                 break
 
-            # generic drop
+            # drop
             if vlist["DROP"]:
-                for ob in olist:
-                    if olist[ob]:
-                        if objs[ob].o["location"] == "SELF":
-                            objs[ob].o["location"] = gm["CURLOC"]
-                            print("You drop the %s." % objs[ob].o["title"])
-                        else:
-                            print("You don't have that.")
+                funcs.drop_obj(gm,olist,objs)
+                break
+
+            # examine
+            if vlist["EXAMINE"]:
+                funcs.examine_obj(gm,olist,objs)
                 break
 
             # inv
