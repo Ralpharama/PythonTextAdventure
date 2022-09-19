@@ -9,6 +9,8 @@ verbs["INV"] = "i,inv,inventory,carrying"
 
 verbs["SWIM"] = "swim"
 verbs["CROSS"] = "cross,traverse,go across,pass over,travel"
+verbs["ON"] = "turn on,ignite,switch on,light"
+verbs["OFF"] = "turn off,snuff,switch off,extinguish"
 
 verbs["NORTH"] = "north,n"
 verbs["EAST"] = "east,e"

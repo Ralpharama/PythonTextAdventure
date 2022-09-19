@@ -36,16 +36,20 @@ class Parser():
         return to_return
 
     def parse_objs(self,text,objs):
+        order = 1
         to_return = {}
         list_of_words = self.parse_sentence(text)
 
-        # single word things
         for itm in objs:
-            to_return[objs[itm].o["lcode"]]  = False 
-            for w in list_of_words:
+            to_return[objs[itm].o["lcode"]]  = 0    # set it 0/false first 
+
+        # single word things
+        for w in list_of_words:
+            for itm in objs:
                 list_of_alts = objs[itm].o["alts"].split(",")
                 if w in list_of_alts:
-                    to_return[objs[itm].o["lcode"]] = True 
+                    to_return[objs[itm].o["lcode"]] = order
+                    order += 1  # do we know what order objs were referred to in
         # two word things
         count = 0
         for tmpw in list_of_words[::2]:
@@ -55,7 +59,8 @@ class Parser():
                 for itm in objs:
                     list_of_alts = objs[itm].o["alts"].split(",")
                     if w in list_of_alts:
-                        to_return[objs[itm].o["lcode"]] = True 
+                        to_return[objs[itm].o["lcode"]] = order
+                    order += 1  # do we know what order objs were referred to in
 
         return to_return
 

@@ -19,8 +19,8 @@ class Location:
     def display_desc(self,gm,objs):
         print(self.o["title"])
         print(self.o["desc"])
-        print(self.display_exits())
-        print(self.display_objects(objs))
+        self.display_exits()
+        self.display_objects(objs)
 
     def display_title(self):
         print(self.o["title"])
@@ -38,6 +38,7 @@ class Location:
         if exit_text:
             if exit_text[-2:] == ", ": exit_text = exit_text[:-2]
             exit_text = "There are exists to the " + exit_text + "."
+            print(exit_text)
         return exit_text
 
     def display_objects(self,objs):
@@ -48,6 +49,7 @@ class Location:
         if obj_text:
             if obj_text[-2:] == ", ": obj_text = obj_text[:-2]
             obj_text = "Also here is " + obj_text + "."
+            print(obj_text)
         return obj_text
 
     def go_direction(self,vlist):

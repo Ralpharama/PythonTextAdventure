@@ -43,7 +43,7 @@ def examine_obj(gm,olist,objs):
     for ob in olist:
         if olist[ob]:
             if objs[ob].o["location"] == "SELF" or objs[ob].o["location"] == gm["CURLOC"]:
-                print("%s." % objs[ob].o["desc"])
+                print("%s" % objs[ob].o["desc"])
             else:
                 print("I don't see that.")
 
